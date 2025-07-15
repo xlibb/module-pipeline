@@ -11,13 +11,13 @@ public type Filter isolated function (MessageContext msgCtx) returns boolean|err
 public type GenericProcessor isolated function (MessageContext msgCtx) returns error?;
 
 # Represents a processor that can be a filter, transformer, or processor and can be attached to a 
-# channel for processing messages. Processors should be idompotent i.e. repeating the execution 
+# channel for processing messages. Processors should be idempotent i.e. repeating the execution 
 # should not change the outcome or the channel state.
 public type Processor GenericProcessor|Filter|Transformer;
 
 # Represents a destination function that processes the message context and returns a result or an 
 # error if it failed to send the message to the destination. Destinations are typically contains a 
-# sender or a writer that sends or writes the message to a specific destination.
+# sender or writer that that delivers the message to the target.
 public type Destination isolated function (MessageContext msgCtx) returns any|error;
 
 # Represents a handler which can be either a `Processor` or a `Destination`.
