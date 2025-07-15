@@ -94,6 +94,8 @@ publishing {
 
 updateTomlFiles.dependsOn copyStdlibs
 
+test.dependsOn ":pipeline-native:build"
+build.dependsOn ":pipeline-native:build"
 build.dependsOn "generatePomFileForMavenPublication"
 
 publishToMavenLocal.dependsOn build
