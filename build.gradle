@@ -101,6 +101,7 @@ release {
 }
 
 task build {
-    dependsOn('pipeline-ballerina:build')
+    dependsOn(':pipeline-native:build')
+    dependsOn(':pipeline-ballerina:build')
 }
 

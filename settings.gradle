@@ -34,8 +34,12 @@ plugins {
 
 rootProject.name = 'pipeline'
 include ':pipeline-ballerina'
+include 'pipeline-native'
+include ':checkstyle'
 
 project(':pipeline-ballerina').projectDir = file('ballerina')
+project(':pipeline-native').projectDir = file('native')
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
 
 gradleEnterprise {
     buildScan {
