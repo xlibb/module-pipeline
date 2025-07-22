@@ -30,7 +30,7 @@ public type Message record {|
     map<anydata> errorDetails?;
     # A map of errors associated with specific destinations, where the key is the destination name and the value is an `ErrorInfo` record
     map<ErrorInfo> destinationErrors?;
-    # Metadata associated with the message, such as desctinations to skip
+    # Metadata associated with the message, such as destinations to skip
     MessageMetadata metadata = {};
     # A map of additional properties associated with the message
     map<anydata> properties = {};

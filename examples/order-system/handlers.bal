@@ -42,7 +42,7 @@ isolated function approveOrder(pipeline:MessageContext msgCtx) returns Calculate
 isolated function checkForOrderDiscount(pipeline:MessageContext msgCtx) returns error? {
     CalculatedOrder 'order = check msgCtx.getContentWithType();
     http:Client discountService = check new("http://discount-service:8080");
-    float discount = check discountService->/dicounts/['order.customerId];
+    float discount = check discountService->/discounts/['order.customerId];
     msgCtx.setProperty("discount", discount);
 }
 
