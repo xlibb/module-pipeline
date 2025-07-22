@@ -48,7 +48,7 @@ ballerina {
     packageOrganization = packageOrg
     module = packageName
     langVersion = ballerinaLangVersion
-    platform = "any"
+    platform = "java21"
     testCoverageParam = "--code-coverage --coverage-format=xml"
 }
 
@@ -94,6 +94,8 @@ publishing {
 
 updateTomlFiles.dependsOn copyStdlibs
 
+test.dependsOn ":pipeline-native:build"
+build.dependsOn ":pipeline-native:build"
 build.dependsOn "generatePomFileForMavenPublication"
 
 publishToMavenLocal.dependsOn build

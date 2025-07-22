@@ -71,6 +71,21 @@ subprojects {
         jbalTools ("org.ballerinalang:jballerina-tools:${ballerinaLangVersion}") {
             transitive = false
         }
+
+        /* Ballerina Standard Libraries */
+        ballerinaStdLibs "io.ballerina.stdlib:io-ballerina:${stdlibIoVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:time-ballerina:${stdlibTimeVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:observe-ballerina:${observeVersion}"
+        ballerinaStdLibs "io.ballerina:observe-ballerina:${observeInternalVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:crypto-ballerina:${stdlibCryptoVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:log-ballerina:${stdlibLogVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:task-ballerina:${stdlibTaskVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:uuid-ballerina:${stdlibUuidVersion}"
+        ballerinaStdLibs "io.ballerina.lib:messaging-ballerina:${stdlibMessagingVersion}"
+
+        // Test dependencies
+        ballerinaStdLibs "io.ballerina.stdlib:constraint-ballerina:${stdlibConstraintVersion}"
+        ballerinaStdLibs "io.ballerina.stdlib:random-ballerina:${stdlibRandomVersion}"
     }
 }
 
@@ -90,6 +105,7 @@ release {
 }
 
 task build {
-    dependsOn('pipeline-ballerina:build')
+    dependsOn(':pipeline-native:build')
+    dependsOn(':pipeline-ballerina:build')
 }
 

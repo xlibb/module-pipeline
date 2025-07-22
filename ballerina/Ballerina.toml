@@ -7,3 +7,12 @@ keywords = ["pipeline", "handler", "replay", "processor", "destination", "store"
 repository = "https://github.com/xlibb/module-pipeline"
 license = ["Apache-2.0"]
 distribution = "2201.12.0"
+
+[platform.java21]
+graalvmCompatible = true
+
+[[platform.java21.dependency]]
+groupId = "io.xlibb.pipeline"
+artifactId = "pipeline-native"
+version = "0.1.0"
+path = "../native/build/libs/pipeline-native-0.1.0.jar"
