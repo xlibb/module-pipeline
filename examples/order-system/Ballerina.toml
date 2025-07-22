@@ -1,0 +1,26 @@
+[package]
+org = "wso2"
+name = "order_system"
+version = "0.1.0"
+distribution = "2201.12.7"
+
+[[dependency]]
+org = "ballerina"
+name = "messaging"
+version = "0.1.0"
+repository = "local"
+
+[[dependency]]
+org = "ballerinax"
+name = "rabbitmq"
+version = "3.3.0"
+repository = "local"
+
+[[dependency]]
+org = "xlibb"
+name = "pipeline"
+version = "0.1.0"
+repository = "local"
+
+[build-options]
+observabilityIncluded = true

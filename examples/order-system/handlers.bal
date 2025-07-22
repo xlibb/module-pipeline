@@ -1,0 +1,62 @@
+import ballerina/constraint;
+import ballerina/http;
+
+import xlibb/pipeline;
+
+@pipeline:ProcessorConfig {id: "validate_order"}
+isolated function validateOrder(pipeline:MessageContext msgCtx) returns error? {
+    Order 'order = check msgCtx.getContentWithType();
+    Order _ = check constraint:validate('order);
+}
+
+@pipeline:FilterConfig {id: "filter_pending_orders"}
+isolated function orderFilter(pipeline:MessageContext msgCtx) returns boolean|error {
+    Order 'order = check msgCtx.getContentWithType();
+    return 'order.status == PENDING || 'order.status == APPROVED;
+}
+
+@pipeline:TransformerConfig {id: "calculate_amount"}
+isolated function calculateOrderAmount(pipeline:MessageContext msgCtx) returns CalculatedOrder|error {
+    Order 'order = check msgCtx.getContentWithType();
+    return {
+        ...'order,
+        amount: 'order.unitPrice * 'order.quantity
+    };
+}
+
+@pipeline:TransformerConfig {id: "approve_order"}
+isolated function approveOrder(pipeline:MessageContext msgCtx) returns CalculatedOrder|error {
+    CalculatedOrder 'order = check msgCtx.getContentWithType();
+    if 'order.status == APPROVED {
+        return 'order; // Skip further processing if already approved
+    }
+    if 'order.amount > 100000.0d {
+        'order.status = FAILED;
+        return error("Order amount exceeds limit");
+    }
+    'order.status = APPROVED;
+    return 'order;
+}
+
+@pipeline:ProcessorConfig {id: "get_discount"}
+isolated function checkForOrderDiscount(pipeline:MessageContext msgCtx) returns error? {
+    CalculatedOrder 'order = check msgCtx.getContentWithType();
+    http:Client discountService = check new("http://discount-service:8080");
+    float discount = check discountService->/dicounts/['order.customerId];
+    msgCtx.setProperty("discount", discount);
+}
+
+@pipeline:TransformerConfig {id: "apply_discount"}
+isolated function applyOrderDiscount(pipeline:MessageContext msgCtx) returns CalculatedOrder|error {
+    CalculatedOrder 'order = check msgCtx.getContentWithType();
+    decimal discount = check msgCtx.getPropertyWithType("discount");
+    'order.amount = 'order.amount - ('order.amount * discount);
+    return 'order;
+}
+
+@pipeline:DestinationConfig {id: "add_order_to_inventory"}
+isolated function addOrderToInventory(pipeline:MessageContext msgCtx) returns json|error {
+    CalculatedOrder 'order = check msgCtx.getContentWithType();
+    http:Client inventoryService = check new("http://inventory-service:8080");
+    return inventoryService->/orders.post('order);
+}
