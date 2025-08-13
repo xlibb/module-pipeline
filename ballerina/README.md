@@ -16,7 +16,7 @@ The `Handler` is the fundamental building block of the handler chain. It represe
 
 The message processors are just Ballerina functions that are annotated to indicate their type and purpose. All processors are assumed to be *idempotent*, meaning that running them multiple times with the same input will always produce the same result. This is crucial for safe message replay. It is developer's responsibility to ensure that the logic within these processors adheres to this principle.
 
-The package provides four types of processors:
+The package provides three types of processors:
 
 - **Filter**: A processor that can drop messages based on a condition. This accepts the *Context* and returns a boolean indicating whether the message should continue processing.
   ```ballerina
@@ -239,7 +239,7 @@ isolated function approveOrder(pipeline:MessageContext msgCtx) returns Calculate
 isolated function checkForOrderDiscount(pipeline:MessageContext msgCtx) returns error? {
     CalculatedOrder 'order = check msgCtx.getContentWithType();
     http:Client discountService = check new("http://discount-service:8080");
-    float discount = check discountService->/dicounts/['order.customerId];
+    float discount = check discountService->/discounts/['order.customerId];
     msgCtx.setProperty("discount", discount);
 }
 
