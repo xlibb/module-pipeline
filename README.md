@@ -10,7 +10,7 @@ Building message-driven applications often involves complex tasks such as data t
 
 This package simplifies these challenges by offering a standardized, declarative way to define message pipelines. It centralizes message flow management, reduces boilerplate code, and makes it easier to build resilient, fault-tolerant applications, thereby improving developer experience and promoting consistent, reliable integration patterns across Ballerina projects.
 
-### Core Components
+### Core components
 
 The package provides a set of core components that facilitate message-driven application development.
 
@@ -70,7 +70,7 @@ isolated function destination(pipeline:MessageContext context) returns anydata|e
 
 The `Message` is the core data structure that represents the message being processed. It contains the actual payload and any metadata required for processing. The `Message` is passed through the handler chain, allowing each processor to access and modify it as needed.
 
-#### Message Context
+#### Message context
 
 The `MessageContext` is a mutable container that holds the current state of the message being processed. It encapsulates the `Message` itself, along with any additional properties or metadata that processors and destinations need to share or update during the message's journey through the handler chain. This allows for a flexible and dynamic processing flow, where each component can access and modify the context as needed.
 
@@ -88,15 +88,15 @@ The following methods are available on the `pipeline:MessageContext`:
 | `removeProperty(string key)`             | Removes a property from the context.                                       |
 | `toRecord()`                             | Converts the context to a record type for easier inspection and debugging. |
 
-#### Failure Store
+#### Failure store
 
 The `FailureStore` is a crucial component that captures messages that fail during processing or delivery. It stores the original message content along with a snapshot of the `MessageContext` at the time of failure. This allows for later inspection, debugging, and potential replay of failed messages.
 
-#### Replay Listener
+#### Replay listener
 
 The `ReplayListener` is an optional component that listens for failed messages stored in the `FailureStore` or a dedicated `ReplayStore`. It attempts to re-process these messages through the handler chain's defined pipeline, including retry policies. If a message consistently fails replay attempts, it can be routed to a Dead Letter Store for manual intervention.
 
-#### Handler Chain
+#### Handler chain
 
 The `HandlerChain` is the central component that orchestrates the entire message processing flow. It manages the sequence of handlers, the `MessageContext`, and the interaction with the `FailureStore` and `ReplayListener`. The `HandlerChain` is responsible for executing the defined processing logic, handling failures, and ensuring messages are processed in a consistent manner.
 
@@ -122,7 +122,7 @@ pipeline:HandlerChain handlerChain = check new(
 );
 ```
 
-### Component Interaction
+### Component interaction
 
 The flow of a message through a `pipeline:HandlerChain` is meticulously orchestrated to ensure reliability and flexible processing:
 
