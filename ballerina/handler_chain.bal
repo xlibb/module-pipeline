@@ -38,7 +38,7 @@ public type ReplayListenerConfiguration record {|
 # the handler chain supports pausing the execution of a message, allowing it to be resumed later with the same state.
 public isolated class HandlerChain {
 
-    private string name;
+    private final string name;
     final readonly & Processor[] processors;
     final readonly & Destination[] destinations;
     private final messaging:Store failureStore;
@@ -50,15 +50,15 @@ public isolated class HandlerChain {
     # + destinations - The destinations to be used in the handler chain, which can be a single destination or an array of destinations
     # + failureStore - The store to be used for storing messages on failure
     # + replayConfig - Optional configuration for replaying messages in the handler chain
-    public isolated function init(string name, Processor|Processor[] processors, Destination|Destination[] destinations,
+    public isolated function init(string name, Processor|readonly & Processor[] processors, Destination|readonly & Destination[] destinations,
             messaging:Store failureStore, ReplayListenerConfiguration? replayListenerConfig = ()) returns Error? {
         if (processors is Processor[] && processors.length() == 0) ||
             (destinations is Destination[] && destinations.length() == 0) {
             return error Error("Handler chain must have at least one processor and one destination");
         }
-        self.name = name.clone();
-        self.processors = processors is Processor[] ? processors.cloneReadOnly() : [processors];
-        self.destinations = destinations is Destination[] ? destinations.cloneReadOnly() : [destinations];
+        self.name = name;
+        self.processors = processors is Processor[] ? processors : [processors];
+        self.destinations = destinations is Destination[] ? destinations : [destinations];
         self.failureStore = failureStore;
         if replayListenerConfig is ReplayListenerConfiguration {
             check startReplayListener(self, replayListenerConfig);
@@ -69,18 +69,14 @@ public isolated class HandlerChain {
     #
     # + return - Returns the name of the handler chain
     public isolated function getName() returns string {
-        lock {
-            return self.name;
-        }
+        return self.name;
     }
 
     # Get the failure store of the handler chain.
     #
     # + return - Returns the failure store of the handler chain
     public isolated function getFailureStore() returns messaging:Store {
-        lock {
-            return self.failureStore;
-        }
+        return self.failureStore;
     }
 
     # Replay the execution of a failed message in the handler chain. Failed messages in replay will
@@ -92,8 +88,7 @@ public isolated class HandlerChain {
         MessageContext msgContext = new (message);
         log:printDebug("message replay started", msgId = msgContext.getId(), handlerchain = self.getName());
         msgContext.cleanMessageForReplay();
-        ExecutionSuccess|ExecutionError result = self.executeInternal(msgContext);
-        return result;
+        return self.executeInternal(msgContext);  
     }
 
     # Dispatch a message to the handler chain for processing with the defined processors and destinations.

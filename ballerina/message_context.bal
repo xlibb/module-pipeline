@@ -18,7 +18,7 @@ import ballerina/jballerina.java;
 # MessageContext encapsulates the message and the relevant properties. Additionally,
 # it provides methods to manipulate the message properties and metadata.
 public isolated class MessageContext {
-    private Message message;
+    private final Message message;
 
     # Initializes a new instance of MessageContext with the provided message.
     #
@@ -33,7 +33,7 @@ public isolated class MessageContext {
     # + return - The unique identifier of the message
     public isolated function getId() returns string {
         lock {
-            return self.message.id.clone();
+            return self.message.id;
         }
     }
 
@@ -60,7 +60,7 @@ public isolated class MessageContext {
     # + return - The name of the handler chain
     public isolated function getHandlerChainName() returns string {
         lock {
-            return self.message.handlerChainName.clone();
+            return self.message.handlerChainName;
         }
     }
 
