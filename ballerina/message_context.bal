@@ -90,9 +90,8 @@ public isolated class MessageContext {
         lock {
             if self.message.properties.hasKey(key) {
                 return self.message.properties[key].clone();
-            } else {
-                panic error Error("Property with key '" + key + "' not found");
             }
+            panic error Error("Property with key '" + key + "' not found");
         }
     }
 
@@ -124,9 +123,8 @@ public isolated class MessageContext {
         lock {
             if self.message.properties.hasKey(key) {
                 return self.message.properties.remove(key).clone();
-            } else {
-                panic error Error("Property with key '" + key + "' not found");
             }
+            panic error Error("Property with key '" + key + "' not found");
         }
     }
 
