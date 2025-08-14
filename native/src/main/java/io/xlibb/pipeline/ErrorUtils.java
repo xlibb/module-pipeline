@@ -23,7 +23,7 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
 public class ErrorUtils {
 
-    public static final String ERROR_TYPE = "Error";
+    private static final String ERROR_TYPE = "Error";
 
     public static BError createGenericError(String message, BError cause) {
         return ErrorCreator.createError(ModuleUtils.getPipelineModule(), ERROR_TYPE, fromString(message),

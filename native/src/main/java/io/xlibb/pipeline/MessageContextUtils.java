@@ -30,9 +30,9 @@ import org.ballerinalang.langlib.value.EnsureType;
  */
 public final class MessageContextUtils {
 
-    public static final BString MESSAGE = StringUtils.fromString("message");
-    public static final BString CONTENT = StringUtils.fromString("content");
-    public static final BString PROPERTIES = StringUtils.fromString("properties");
+    private static final BString MESSAGE = StringUtils.fromString("message");
+    private static final BString CONTENT = StringUtils.fromString("content");
+    private static final BString PROPERTIES = StringUtils.fromString("properties");
 
     private MessageContextUtils() {}
 

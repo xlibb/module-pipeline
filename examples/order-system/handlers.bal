@@ -57,7 +57,7 @@ isolated function approveOrder(pipeline:MessageContext msgCtx) returns Calculate
 @pipeline:ProcessorConfig {id: "get_discount"}
 isolated function checkForOrderDiscount(pipeline:MessageContext msgCtx) returns error? {
     CalculatedOrder 'order = check msgCtx.getContentWithType();
-    http:Client discountService = check new("http://discount-service:8080");
+    http:Client discountService = check new ("http://discount-service:8080");
     float discount = check discountService->/discounts/['order.customerId];
     msgCtx.setProperty("discount", discount);
 }
@@ -70,9 +70,15 @@ isolated function applyOrderDiscount(pipeline:MessageContext msgCtx) returns Cal
     return 'order;
 }
 
-@pipeline:DestinationConfig {id: "add_order_to_inventory"}
+@pipeline:DestinationConfig {
+    id: "add_order_to_inventory",
+    retryConfig: {
+        maxRetries: 4,
+        retryInterval: 2
+    }
+}
 isolated function addOrderToInventory(pipeline:MessageContext msgCtx) returns json|error {
     CalculatedOrder 'order = check msgCtx.getContentWithType();
-    http:Client inventoryService = check new("http://inventory-service:8080");
+    http:Client inventoryService = check new ("http://inventory-service:8080");
     return inventoryService->/orders.post('order);
 }
