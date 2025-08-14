@@ -1,7 +1,7 @@
 [package]
 org = "xlibb"
 name = "pipeline"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["xlibb"]
 keywords = ["pipeline", "handler", "replay", "processor", "destination", "store"]
 repository = "https://github.com/xlibb/module-pipeline"
@@ -14,5 +14,5 @@ graalvmCompatible = true
 [[platform.java21.dependency]]
 groupId = "io.xlibb.pipeline"
 artifactId = "pipeline-native"
-version = "0.1.0"
-path = "../native/build/libs/pipeline-native-0.1.0.jar"
+version = "1.0.0"
+path = "../native/build/libs/pipeline-native-1.0.0-SNAPSHOT.jar"
