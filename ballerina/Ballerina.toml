@@ -15,4 +15,4 @@ graalvmCompatible = true
 groupId = "io.xlibb.pipeline"
 artifactId = "pipeline-native"
 version = "1.0.0"
-path = "../native/build/libs/pipeline-native-1.0.0-SNAPSHOT.jar"
+path = "../native/build/libs/pipeline-native-1.0.0.jar"
