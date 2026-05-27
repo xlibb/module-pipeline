@@ -26,14 +26,14 @@ The package provides three types of processors:
 
 - **Filter**: A processor that can drop messages based on a condition. This accepts the *Context* and returns a boolean indicating whether the message should continue processing.
   ```ballerina
-  @pipeline:Filter {id: "filter"}
+  @pipeline:FilterConfig {id: "filter"}
   isolated function filter(pipeline:MessageContext context) returns boolean|error {
       // Check some condition on the message
   }
   ```
 - **Transformer**: A processor that modifies the message content or metadata. It accepts the *Context* and returns a modified message content.
   ```ballerina
-  @pipeline:Transformer {id: "transformer"}
+  @pipeline:TransformerConfig {id: "transformer"}
   isolated function transformer(pipeline:MessageContext context) returns anydata|error {
       // Modify the message content or metadata
       // Return the modified message content
@@ -41,7 +41,7 @@ The package provides three types of processors:
   ```
 - Generic Processor: A processor that can perform any action on the *Context*. It accepts the *Context* and returns nothing.
   ```ballerina
-  @pipeline:Processor {id: "generic"}
+  @pipeline:ProcessorConfig {id: "generic"}
   isolated function generic(pipeline:MessageContext context) returns error? {
       // Perform any action on the context
   }
@@ -54,8 +54,8 @@ A destination is similar to a generic processor but is used to deliver the messa
 A destination can be configured with retry policies to ensure reliable delivery.
 
 ```ballerina
-@pipeline:Destination {
-    id: "destination"
+@pipeline:DestinationConfig {
+    id: "destination",
     retryConfig: {
         maxRetries: 3,
         retryInterval: 2
@@ -115,8 +115,8 @@ pipeline:HandlerChain handlerChain = check new(
     replayListenerConfig = {
         pollingInterval: 5, // Polling interval for the replay listener
         maxRetries: 3, // Maximum retries for replaying messages
-        retryInterval: 2 // Interval between retries
-        deadLetterStore: deadLetterStore // Dead Letter Store
+        retryInterval: 2, // Interval between retries
+        deadLetterStore: deadLetterStore, // Dead Letter Store
         replayStore: replayStore // Optional Replay Store
     }
 );
